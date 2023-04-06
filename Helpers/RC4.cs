@@ -15,8 +15,6 @@ namespace SafeMessenge.Helpers
             init(key);
         }
 
-        // Key-Scheduling Algorithm 
-        // Алгоритм ключевого расписания 
         private void init(byte[] key)
         {
             int keyLength = key.Length;
@@ -34,7 +32,7 @@ namespace SafeMessenge.Helpers
             }
         }
 
-        public byte[] Encode(byte[] dataB, int size)
+        public byte[] Encrypt(byte[] dataB, int size)
         {
             byte[] data = dataB.Take(size).ToArray();
 
@@ -47,13 +45,11 @@ namespace SafeMessenge.Helpers
 
             return cipher;
         }
-        public byte[] Decode(byte[] dataB, int size)
+        public byte[] Decrypt(byte[] dataB, int size)
         {
-            return Encode(dataB, size);
+            return Encrypt(dataB, size);
         }
 
-        // Pseudo-Random Generation Algorithm 
-        // Генератор псевдослучайной последовательности 
         private byte keyItem()
         {
             x = (x + 1) % 128;
@@ -90,7 +86,7 @@ namespace SafeMessenge.Helpers
             }
             RC4 _chiper = new(_byteKey);
             byte[] inputBytes = UTF32Encoding.Unicode.GetBytes(message);
-            byte[] encryptedBytes = _chiper.Encode(inputBytes, inputBytes.Length);
+            byte[] encryptedBytes = _chiper.Encrypt(inputBytes, inputBytes.Length);
             var encryptedString = UTF32Encoding.Unicode.GetString(encryptedBytes);
             return encryptedString;
         }
@@ -103,7 +99,7 @@ namespace SafeMessenge.Helpers
             }
             RC4 _chiper = new(_byteKey);
             byte[] encryptedBytes = UTF32Encoding.Unicode.GetBytes(encryptedString);
-            byte[] decryptedBytes = _chiper.Decode(encryptedBytes, encryptedBytes.Length);
+            byte[] decryptedBytes = _chiper.Decrypt(encryptedBytes, encryptedBytes.Length);
             string decryptedString = UTF32Encoding.Unicode.GetString(decryptedBytes);
             return decryptedString;
         }
